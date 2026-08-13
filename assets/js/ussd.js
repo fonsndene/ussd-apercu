@@ -270,6 +270,25 @@
     rythme();
   }
 
+  /* --- Plan d'acces : chargement a la demande ----------------------------
+     openstreetmap.org n'est appele que si le visiteur clique. Avant cela,
+     aucune requete vers un tiers, et la page reste legere.                 */
+  var carte = document.getElementById("carte");
+  if (carte) {
+    var voirCarte = carte.querySelector('[data-carte="afficher"]');
+    if (voirCarte) {
+      voirCarte.addEventListener("click", function () {
+        var cadre = document.createElement("iframe");
+        cadre.src = carte.getAttribute("data-src");
+        cadre.title = "Plan d'accès au campus de l'USSD, Point E à Dakar";
+        cadre.loading = "lazy";
+        cadre.setAttribute("referrerpolicy", "no-referrer");
+        carte.appendChild(cadre);
+        carte.classList.add("is-chargee");
+      });
+    }
+  }
+
   /* --- Bandeau cookies : opt-in strict ----------------------------------
      Aucun traceur n'est chargé par défaut. Le choix est mémorisé en local. */
   var cookie = document.getElementById("cookie-banner");

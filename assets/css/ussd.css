@@ -388,6 +388,9 @@ img { max-width: 100%; height: auto; display: block; }
   font-size: clamp(1.5rem, 2.6vw + .8rem, 3rem); line-height: 1.15;
   letter-spacing: -.02em; max-width: 20ch; text-wrap: balance;
 }
+.cine__appui {
+  margin: 0 0 1.6rem; font-size: var(--t-lg); color: #DED7D0; max-width: 34ch;
+}
 .cine__signature {
   margin: 0 0 2.25rem; font-family: var(--display); font-style: italic;
   font-size: clamp(1.05rem, .9vw + .8rem, 1.45rem); color: var(--ochre);
@@ -918,6 +921,58 @@ table.data th, table.data td { text-align: left; padding: .8rem 1rem; border-bot
 table.data thead th { background: var(--mist); font-size: var(--t-xs); letter-spacing: .08em;
   text-transform: uppercase; color: var(--ink-soft); border-bottom: 2px solid var(--line-strong); }
 table.data td.num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+
+
+/* --- 13 bis. Plan d'acces ------------------------------------------------
+   Tant que le visiteur n'a rien demande, on affiche une carte-affiche : le
+   lieu, l'adresse, deux actions, sur le fond sombre de la charte. La carte
+   OpenStreetMap ne s'installe qu'au clic — aucun tiers appele a l'ouverture. */
+.carte {
+  position: relative; overflow: hidden;
+  border-radius: var(--radius); background: var(--ink);
+  box-shadow: 0 1px 2px rgba(26,21,18,.06), 0 22px 48px -26px rgba(26,21,18,.5);
+  aspect-ratio: 16 / 10;
+}
+.carte__apercu { position: absolute; inset: 0; }
+/* Trame de plan dessinee en CSS : evoque une carte sans rien telecharger. */
+.carte__voile {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(to top, rgba(16,12,10,.96) 0%, rgba(16,12,10,.90) 40%, rgba(16,12,10,.72) 100%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 1px, transparent 1px 46px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 1px, transparent 1px 46px),
+    radial-gradient(60% 70% at 26% 34%, rgba(217,138,31,.20), transparent 70%),
+    var(--ink);
+}
+.carte__contenu {
+  position: absolute; inset: auto 0 0 0; z-index: 1;
+  padding: clamp(1.25rem, 3vw, 2rem);
+}
+.carte__lieu {
+  display: flex; align-items: center; gap: .6rem; margin: 0 0 .55rem;
+  font-size: var(--t-xs); font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--ochre);
+}
+/* Epingle dessinee en CSS : aucune icone a charger. */
+.carte__epingle {
+  width: .7rem; height: .7rem; border-radius: 50% 50% 50% 0;
+  background: var(--ochre); transform: rotate(-45deg); flex: none;
+  box-shadow: 0 0 0 5px rgba(217,138,31,.20);
+}
+.carte__adresse {
+  margin: 0 0 1.35rem; color: #fff;
+  font-family: var(--display); font-size: clamp(1.15rem, 1.1vw + .85rem, 1.6rem);
+  line-height: 1.25;
+}
+.carte__actions { display: flex; flex-wrap: wrap; gap: .6rem; }
+.carte__actions .btn--contour { backdrop-filter: blur(6px); }
+.carte__note { margin: .9rem 0 0; font-size: var(--t-xs); color: #ADA49C; }
+
+/* Une fois demandee, la carte occupe tout le cadre. */
+.carte iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.carte.is-chargee .carte__apercu { display: none; }
+
+@media (max-width: 44rem) { .carte { aspect-ratio: 4 / 5; } }
 
 /* --- 14. Pied de page --------------------------------------------------- */
 .footer { background: var(--ink); color: #B9B1AA; font-size: var(--t-sm); padding-block: clamp(3rem, 5vw, 4rem) 2rem; }

@@ -107,8 +107,29 @@
         <img src="assets/img/photos/secretariat.webp" alt="Deux membres du personnel de l'USSD travaillant sur un dossier au secrétariat" width="1080" height="608" loading="lazy" decoding="async">
         <figcaption>Le secrétariat, Point E — Avenue Birago Diop x Rue de Thiès.</figcaption>
       </figure>
-      <!-- À COMPLÉTER : plan d'accès interactif, à charger au clic (carte OpenStreetMap)
-           pour ne pas dégrader la performance ni déposer de traceur tiers. -->
+      <!-- Plan d'acces. La carte n'est chargee qu'au clic : sinon openstreetmap.org
+           serait appele des l'ouverture de la page, ce qui deposerait un tiers et
+           alourdirait le chargement. Coordonnees relevees sur OpenStreetMap pour
+           l'Avenue Birago Diop ; le point exact du batiment reste a confirmer. -->
+      <div class="carte" id="carte" style="margin-top:1.75rem"
+           data-src="https://www.openstreetmap.org/export/embed.html?bbox=-17.4641%2C14.6941%2C-17.4561%2C14.7021&amp;layer=mapnik&amp;marker=14.6981%2C-17.4601">
+        <div class="carte__apercu">
+          <div class="carte__voile" aria-hidden="true"></div>
+          <div class="carte__contenu">
+            <p class="carte__lieu">
+              <span class="carte__epingle" aria-hidden="true"></span>
+              Point E &middot; Dakar
+            </p>
+            <p class="carte__adresse">Avenue Birago Diop<br>x Rue de Thiès</p>
+            <div class="carte__actions">
+              <button type="button" class="btn btn--light" data-carte="afficher">Afficher le plan</button>
+              <a class="btn btn--contour" href="https://www.openstreetmap.org/?mlat=14.6981&amp;mlon=-17.4601#map=17/14.6981/-17.4601"
+                 target="_blank" rel="noopener">Itinéraire <span class="visually-hidden">(nouvelle fenêtre)</span></a>
+            </div>
+            <p class="carte__note">Plan fourni par OpenStreetMap, chargé seulement à votre demande.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div></section>
 
