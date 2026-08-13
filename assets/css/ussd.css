@@ -246,7 +246,10 @@ img { max-width: 100%; height: auto; display: block; }
 .cine { position: relative; }
 
 .cine__scene {
-  position: relative; aspect-ratio: 16 / 9; min-height: 26rem;
+  /* Format cinemascope : -19 % de hauteur par rapport au 16:9, et le cadre
+     large sert le propos. Le recadrage vertical est compense acte par acte
+     par object-position, pour ne couper aucun visage. */
+  position: relative; aspect-ratio: 2.2 / 1; min-height: 20rem;
   overflow: hidden; border-radius: var(--radius); background: var(--ink);
   box-shadow: 0 1px 2px rgba(26,21,18,.06), 0 24px 54px -28px rgba(26,21,18,.5);
 }
@@ -256,17 +259,20 @@ img { max-width: 100%; height: auto; display: block; }
 .cine__slide {
   position: absolute; inset: 0; margin: 0;
   opacity: 0; visibility: hidden;
-  transition: opacity 1200ms cubic-bezier(.4, 0, .2, 1), visibility 0s 1200ms;
+  transition: opacity 800ms cubic-bezier(.4, 0, .2, 1), visibility 0s 800ms;
 }
 .cine__slide.is-active { opacity: 1; visibility: visible; transition-delay: 0s, 0s; }
 
 .cine__fond { position: absolute; inset: 0; overflow: hidden; }
 .cine__fond img { width: 100%; height: 100%; object-fit: cover; display: block; will-change: transform; }
+.cine__slide--1 .cine__fond img { object-position: center 38%; }
+.cine__slide--2 .cine__fond img { object-position: center 46%; }
+.cine__slide--3 .cine__fond img { object-position: center 34%; }
 
 /* ---- Les trois cameras -------------------------------------------------- */
-.cine__slide--1.is-active .cine__fond img { animation: cam-avant 7600ms cubic-bezier(.33,0,.25,1) both; }
-.cine__slide--2.is-active .cine__fond img { animation: cam-lateral 8600ms cubic-bezier(.33,0,.25,1) both; }
-.cine__slide--3.is-active .cine__fond img { animation: cam-recul 9600ms cubic-bezier(.25,0,.2,1) both; }
+.cine__slide--1.is-active .cine__fond img { animation: cam-avant 5100ms cubic-bezier(.33,0,.25,1) both; }
+.cine__slide--2.is-active .cine__fond img { animation: cam-lateral 5600ms cubic-bezier(.33,0,.25,1) both; }
+.cine__slide--3.is-active .cine__fond img { animation: cam-recul 6100ms cubic-bezier(.25,0,.2,1) both; }
 
 @keyframes cam-avant   { from { transform: scale(1.015) translate3d(0, .8%, 0); }
                          to   { transform: scale(1.105) translate3d(0, -1.4%, 0); } }
@@ -308,6 +314,11 @@ img { max-width: 100%; height: auto; display: block; }
   padding: clamp(1.75rem, 4vw, 3.75rem);
   max-width: 46rem;
 }
+/* Acte 1 : le texte monte en haut du cadre, l'appel a l'action se cale en bas.
+   C'est la marge automatique qui cree l'ecart, pas une hauteur fixe. */
+.cine__slide--1 .cine__texte { justify-content: flex-start; }
+.cine__slide--1 .cine__appel { margin-top: auto; margin-bottom: 0; justify-content: flex-start; }
+
 .cine__slide--3 .cine__texte {
   max-width: none; align-items: center; text-align: center;
   padding-inline: clamp(1.75rem, 8vw, 7rem);
@@ -315,7 +326,7 @@ img { max-width: 100%; height: auto; display: block; }
 
 .cine__slide.is-active .cine__texte > *,
 .cine__slide.is-active .cine__faits > li {
-  animation: entree 1100ms cubic-bezier(.16, .8, .28, 1) both;
+  animation: entree 800ms cubic-bezier(.16, .8, .28, 1) both;
   animation-delay: var(--d, 0s);
 }
 @keyframes entree {
@@ -332,10 +343,9 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 /* ---- Acte 1 : identite -------------------------------------------------- */
-.cine__blason { width: clamp(58px, 6vw, 86px); height: auto; margin-bottom: 1.5rem; }
 .cine__nom {
-  color: #fff; margin: 0 0 1.1rem;
-  font-size: clamp(1.6rem, 2.5vw + .8rem, 2.9rem); line-height: 1.14;
+  color: #fff; margin: 0 0 1.15rem;
+  font-size: clamp(1.7rem, 2.7vw + .85rem, 3.15rem); line-height: 1.12;
   letter-spacing: -.015em; text-wrap: balance;
 }
 .cine__credo {
@@ -381,6 +391,21 @@ img { max-width: 100%; height: auto; display: block; }
   font-size: clamp(1.05rem, .9vw + .8rem, 1.45rem); color: var(--ochre);
 }
 .cine__appel { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: center; margin-bottom: 1.5rem; }
+/* Boutons de la scene : un cran plus larges que ceux du corps de page, et le
+   contour passe en verre depoli pour tenir sur la photographie. */
+.cine__appel .btn {
+  padding: .95rem 1.8rem; font-size: var(--t-base); letter-spacing: .015em;
+  border-radius: var(--radius);
+}
+.cine__appel .btn--light {
+  box-shadow: 0 2px 4px rgba(0,0,0,.18), 0 14px 32px -14px rgba(0,0,0,.55);
+}
+.cine__appel .btn--light:hover { box-shadow: 0 4px 8px rgba(0,0,0,.22), 0 18px 38px -14px rgba(0,0,0,.6); }
+.cine__appel .btn--contour {
+  backdrop-filter: blur(7px) saturate(1.2);
+  background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.72);
+}
+.cine__appel .btn--contour:hover { background: rgba(255,255,255,.26); border-color: #fff; }
 
 /* ---- Pilotage ----------------------------------------------------------- */
 .cine__pilote { position: relative; margin-top: 1.1rem; }
@@ -415,6 +440,10 @@ img { max-width: 100%; height: auto; display: block; }
 @media (max-width: 62rem) {
   .cine__scene { aspect-ratio: 4 / 5; min-height: 0; }
   .cine__texte { max-width: none; justify-content: flex-end; }
+  /* En etroit le voile est dense en bas : l'acte 1 y redescend son texte,
+     sinon l'accroche se retrouverait sur la partie claire du degrade. */
+  .cine__slide--1 .cine__texte { justify-content: flex-end; }
+  .cine__slide--1 .cine__appel { margin-top: 1.5rem; }
   .cine__slide--1 .cine__voile, .cine__slide--2 .cine__voile {
     background: linear-gradient(to bottom, rgba(16,12,10,.55) 0%, rgba(16,12,10,.84) 42%, rgba(16,12,10,.96) 100%);
   }
