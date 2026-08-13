@@ -93,75 +93,109 @@
 
 <main id="contenu">
 
-  <!-- Hero — l'accroche est posee sur le diaporama, qui occupe toute la
-       largeur de la zone. La lisibilite repose sur un voile degrade dense
-       a gauche : mesure a 6:1 minimum sur les trois images, soit au-dela
-       du AA exige. La legende de l'etape reste sous l'image, sur fond clair. -->
+  <!-- Hero — piece institutionnelle en trois actes.
+       ACTE 1 « Qui sommes-nous » : travelling avant lent, blason puis nom puis
+         devise. Immersion.
+       ACTE 2 « Ce que nous offrons » : travelling lateral, faits reveles en
+         cascade. Demonstration.
+       ACTE 3 « Quel avenir » : recul de camera, rythme ralenti, promesse puis
+         appel a l'action, et tenue longue en fin de plan. Projection.
+       Les trois voiles sont dimensionnes par mesure pour tenir le contraste AA
+       dans la zone de texte propre a chaque acte : aucune animation ne passe
+       jamais derriere un texte, seule l'image bouge, sous le voile. -->
   <section class="hero" id="diaporama" role="region"
            aria-roledescription="carrousel"
            aria-label="L&rsquo;Université des Sciences de la Santé de Dakar en trois temps">
     <div class="wrap">
+      <div class="cine">
+        <div class="cine__scene">
 
-      <div class="diapo">
-        <div class="diapo__scene">
-          <figure class="diapo__slide is-active" role="group"
-                  aria-roledescription="diapositive" aria-label="1 sur 3">
-            <img src="assets/img/photos/slide-1-1400.webp"
+          <!-- ================= ACTE 1 — QUI SOMMES-NOUS ================= -->
+          <article class="cine__slide cine__slide--1 is-active" data-duree="7000"
+                   role="group" aria-roledescription="diapositive" aria-label="1 sur 3">
+            <div class="cine__fond">
+              <img src="assets/img/photos/slide-1-1400.webp"
                  srcset="assets/img/photos/slide-1-900.webp 900w,
                          assets/img/photos/slide-1-1400.webp 1400w,
                          assets/img/photos/slide-1-1900.webp 1900w"
                  sizes="(max-width: 78rem) 100vw, 76rem"
-                 alt="Étudiants de l&rsquo;USSD réunis derrière le drapeau du Mali lors de la journée d&rsquo;intégration"
-                 width="1400" height="788" fetchpriority="high" decoding="async">
-          </figure>
-          <figure class="diapo__slide" role="group"
-                  aria-roledescription="diapositive" aria-label="2 sur 3">
-            <img src="assets/img/photos/slide-2-1400.webp"
+                 alt="" width="1400" height="788" fetchpriority="high" decoding="async">
+            </div>
+            <div class="cine__voile" aria-hidden="true"></div>
+            <div class="cine__texte">
+              <img class="cine__blason" style="--d:.15s" src="assets/img/logo-ussd.png"
+                   alt="" width="86" height="115" fetchpriority="high">
+              <h1 class="cine__nom" style="--d:.65s">Université des Sciences<br>de la Santé de Dakar</h1>
+              <p class="cine__credo" style="--d:1.35s">L&rsquo;excellence, notre credo.</p>
+              <p class="cine__pied" style="--d:1.95s">Dakar, Sénégal &middot; depuis le 29 mars 2016</p>
+            </div>
+          </article>
+
+          <!-- ================= ACTE 2 — CE QUE NOUS OFFRONS ============== -->
+          <article class="cine__slide cine__slide--2" data-duree="8000"
+                   role="group" aria-roledescription="diapositive" aria-label="2 sur 3">
+            <div class="cine__fond">
+              <img src="assets/img/photos/slide-2-1400.webp"
                  srcset="assets/img/photos/slide-2-900.webp 900w,
                          assets/img/photos/slide-2-1400.webp 1400w,
                          assets/img/photos/slide-2-1900.webp 1900w"
                  sizes="(max-width: 78rem) 100vw, 76rem"
-                 alt="Étudiante de l&rsquo;USSD en blouse blanche observant un échantillon au microscope"
-                 width="1400" height="788" loading="lazy" decoding="async">
-          </figure>
-          <figure class="diapo__slide" role="group"
-                  aria-roledescription="diapositive" aria-label="3 sur 3">
-            <img src="assets/img/photos/slide-3-1400.webp"
+                 alt="" width="1400" height="788" loading="lazy" decoding="async">
+            </div>
+            <div class="cine__voile" aria-hidden="true"></div>
+            <div class="cine__texte">
+              <p class="cine__kicker" style="--d:.2s">Ce que nous offrons</p>
+              <p class="cine__titre" style="--d:.55s">Deux diplômes d&rsquo;État.<br>L&rsquo;hôpital dès les premières années.</p>
+              <ul class="cine__faits">
+                <li style="--d:1.25s"><b>8 ans</b><span>Docteur en Médecine</span></li>
+                <li style="--d:1.55s"><b>6 ans</b><span>Docteur en Pharmacie</span></li>
+                <li style="--d:1.85s"><b>80+</b><span>enseignants qualifiés</span></li>
+                <li style="--d:2.15s"><b>15</b><span>hôpitaux partenaires</span></li>
+                <li style="--d:2.45s"><b>2025</b><span>accréditation CAMES</span></li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- ================= ACTE 3 — QUEL AVENIR ====================== -->
+          <article class="cine__slide cine__slide--3" data-duree="9000"
+                   role="group" aria-roledescription="diapositive" aria-label="3 sur 3">
+            <div class="cine__fond">
+              <img src="assets/img/photos/slide-3-1400.webp"
                  srcset="assets/img/photos/slide-3-900.webp 900w,
                          assets/img/photos/slide-3-1400.webp 1400w,
                          assets/img/photos/slide-3-1900.webp 1900w"
                  sizes="(max-width: 78rem) 100vw, 76rem"
-                 alt="Diplômés et enseignants de l&rsquo;USSD en toge lors de la remise des diplômes d&rsquo;État"
-                 width="1400" height="788" loading="lazy" decoding="async">
-          </figure>
-
-          <div class="diapo__voile" aria-hidden="true"></div>
-          <p id="diapo-vue" class="visually-hidden" aria-live="off">Image 1 sur 3 : arriver.</p>
-
-          <div class="diapo__contenu">
-            <p class="eyebrow">Université des Sciences de la Santé de Dakar &middot; depuis 2016</p>
-            <h1>Former les médecins et les pharmaciens dont l&rsquo;Afrique de l&rsquo;Ouest a besoin.</h1>
-            <div class="hero__actions">
-              <a class="btn btn--light" href="admissions.html#candidater">Candidater</a>
-              <a class="btn btn--contour" href="formations.html">Voir les cursus</a>
+                 alt="" width="1400" height="788" loading="lazy" decoding="async">
             </div>
-
-            <div class="diapo__pilote">
-              <!-- Obligatoire tant que le diaporama defile seul (WCAG 2.2.2).
-                   Invisible a la souris, revele des qu'il recoit le focus. -->
-              <button type="button" class="diapo__arret" data-diapo="pause"
-                      aria-label="Arrêter le défilement automatique">Arrêter le défilement</button>
-              <div class="diapo__jauge">
-                <button type="button" class="pas is-active" data-vers="0" aria-label="Afficher l&rsquo;image 1 sur 3 : arriver" aria-current="true"><i></i></button>
-                <button type="button" class="pas" data-vers="1" aria-label="Afficher l&rsquo;image 2 sur 3 : se former" aria-current="false"><i></i></button>
-                <button type="button" class="pas" data-vers="2" aria-label="Afficher l&rsquo;image 3 sur 3 : devenir" aria-current="false"><i></i></button>
+            <div class="cine__voile" aria-hidden="true"></div>
+            <div class="cine__texte">
+              <p class="cine__kicker" style="--d:.3s">Votre avenir</p>
+              <p class="cine__promesse" style="--d:.8s">Former les médecins et les pharmaciens dont l&rsquo;Afrique de l&rsquo;Ouest a besoin.</p>
+              <p class="cine__signature" style="--d:2.1s">L&rsquo;excellence, notre credo.</p>
+              <div class="cine__appel" style="--d:2.9s">
+                <a class="btn btn--light" href="admissions.html#candidater">Candidater</a>
+                <a class="btn btn--contour" href="formations.html">Voir les cursus</a>
               </div>
+              <p class="cine__pied" style="--d:3.4s">Rentrée le 5 octobre &middot; candidatures jusqu&rsquo;au 15 septembre</p>
             </div>
+          </article>
+
+        </div>
+
+        <div class="cine__pilote">
+          <!-- Obligatoire tant que le diaporama defile seul (WCAG 2.2.2).
+               Invisible a la souris, revele des qu'il recoit le focus. -->
+          <button type="button" class="diapo__arret" data-diapo="pause"
+                  aria-label="Arrêter le défilement automatique">Arrêter le défilement</button>
+          <div class="cine__jauge">
+            <button type="button" class="pas is-active" data-vers="0" aria-label="Acte 1 sur 3 : qui sommes-nous" aria-current="true"><i></i></button>
+            <button type="button" class="pas" data-vers="1" aria-label="Acte 2 sur 3 : ce que nous offrons" aria-current="false"><i></i></button>
+            <button type="button" class="pas" data-vers="2" aria-label="Acte 3 sur 3 : quel avenir" aria-current="false"><i></i></button>
           </div>
         </div>
 
+        <p id="diapo-vue" class="visually-hidden" aria-live="off">Acte 1 sur 3 : qui sommes-nous.</p>
       </div>
-
     </div>
   </section>
 

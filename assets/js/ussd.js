@@ -97,131 +97,106 @@
     });
   }
 
-  /* --- Diaporama du hero -------------------------------------------------
-     Trois photographies, fondu enchaîné, 4 s par image.
+  /* --- Hero cinematique : trois actes -----------------------------------
+     Chaque acte porte sa propre duree (data-duree) : 7 s, 8 s, 9 s. Le rythme
+     ralentit vers la fin, et le dernier plan tient plus longtemps pour laisser
+     le message s'imprimer.
 
-     Conformité :
-     - WCAG 2.2.2 « Pause, Stop, Hide » : la commande d'arrêt est hors écran
-       et revient au premier focus clavier, comme le lien d'évitement. Les
-       boutons de lecture visibles ont été retirés à la demande du client ;
-       l'affordance d'arrêt, elle, reste obligatoire.
-     - WCAG 2.1.1 : flèches ←/→, Début et Fin quand le diaporama a le focus ;
-       toutes les commandes sont de vrais boutons, atteignables au Tab.
-     - Motif ARIA APG « carrousel » : la zone d'images est en aria-live="off"
-       pendant le défilement automatique, et bascule en "polite" dès que
-       l'utilisateur prend la main — sinon un lecteur d'écran serait
-       interrompu toutes les six secondes.
-     - prefers-reduced-motion : aucun défilement automatique.               */
+     Conformite :
+     - WCAG 2.2.2 : commande d'arret hors ecran, ramenee au premier focus
+       clavier. Le survol et le focus suspendent aussi le defilement.
+     - WCAG 2.1.1 : fleches gauche/droite, Debut et Fin quand le hero a le
+       focus ; les reperes d'acte sont de vrais boutons.
+     - Motif ARIA APG « carrousel » : la zone de service est muette pendant le
+       defilement automatique et devient annoncante des que l'utilisateur
+       prend la main.
+     - prefers-reduced-motion : aucun defilement, aucune camera.            */
   var diapo = document.getElementById("diaporama");
   if (diapo) {
-    var DUREE = 4000;
     var vue = document.getElementById("diapo-vue");
-    var vues = Array.prototype.slice.call(diapo.querySelectorAll(".diapo__slide"));
+    var actes = Array.prototype.slice.call(diapo.querySelectorAll(".cine__slide"));
     var pas = Array.prototype.slice.call(diapo.querySelectorAll(".pas"));
     var btnPause = diapo.querySelector('[data-diapo="pause"]');
     var sobre = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    var LEGENDES = ["arriver", "se former", "devenir"];
+    var TITRES = ["qui sommes-nous", "ce que nous offrons", "quel avenir"];
 
-    var i = 0;          // image affichée
-    var auto = false;   // défilement automatique souhaité
-    var gele = false;   // suspension passagère : survol, focus, onglet caché
+    var i = 0;
+    var auto = false;   // defilement automatique souhaite
+    var gele = false;   // suspension passagere : survol, focus, onglet cache
     var tic = null;
 
+    function duree(n) { return parseInt(actes[n].getAttribute("data-duree"), 10) || 7000; }
+
     function peindre() {
-      vues.forEach(function (v, n) { v.classList.toggle("is-active", n === i); });
+      actes.forEach(function (a, n) {
+        var on = n === i;
+        // On retire puis remet la classe pour rearmer camera et cascade.
+        a.classList.toggle("is-active", on);
+      });
       pas.forEach(function (p, n) {
         p.classList.remove("is-active", "is-vu");
-        // on réarme l'animation de remplissage du segment
         void p.offsetWidth;
         if (n < i) { p.classList.add("is-vu"); }
-        if (n === i) { p.classList.add("is-active"); }
+        if (n === i) {
+          p.style.setProperty("--duree", duree(i) + "ms");
+          p.classList.add("is-active");
+        }
         p.setAttribute("aria-current", n === i ? "true" : "false");
       });
-      // Plus de legende visible : on annonce le changement aux lecteurs d'ecran.
-      vue.textContent = "Image " + (i + 1) + " sur " + vues.length + " : " + LEGENDES[i] + ".";
+      vue.textContent = "Acte " + (i + 1) + " sur " + actes.length + " : " + TITRES[i] + ".";
     }
 
-    function aller(n) { i = (n + vues.length) % vues.length; peindre(); }
+    function aller(n) { i = (n + actes.length) % actes.length; peindre(); }
 
     function rythme() {
-      if (tic) { clearInterval(tic); tic = null; }
+      if (tic) { clearTimeout(tic); tic = null; }
       var actif = auto && !gele;
       diapo.setAttribute("data-pause", String(!actif));
-      // Pendant le défilement automatique, on n'annonce rien : l'utilisateur
-      // n'a pas demandé ces changements. Dès qu'il pilote, on annonce.
       vue.setAttribute("aria-live", actif ? "off" : "polite");
-      if (actif) { tic = setInterval(function () { aller(i + 1); }, DUREE); }
+      // setTimeout et non setInterval : la duree change d'un acte a l'autre.
+      if (actif) {
+        tic = setTimeout(function () { aller(i + 1); rythme(); }, duree(i));
+      }
     }
 
     function majBouton() {
       btnPause.setAttribute("aria-label",
         auto ? "Arrêter le défilement automatique" : "Reprendre le défilement automatique");
+      btnPause.textContent = auto ? "Arrêter le défilement" : "Reprendre le défilement";
     }
 
-    // Commandes
     pas.forEach(function (p, n) {
       p.addEventListener("click", function () { aller(n); rythme(); });
     });
-    btnPause.addEventListener("click", function () {
-      auto = !auto;
-      majBouton();
-      rythme();
-    });
+    btnPause.addEventListener("click", function () { auto = !auto; majBouton(); rythme(); });
 
-    // Clavier
     diapo.addEventListener("keydown", function (e) {
       var n = null;
       if (e.key === "ArrowLeft") n = i - 1;
-      else if (e.key === "ArrowRight") n = i + 1;
-      else if (e.key === "Home") n = 0;
-      else if (e.key === "End") n = vues.length - 1;
-      if (n === null) return;
-      e.preventDefault();
-      aller(n);
-      rythme();
+      if (e.key === "ArrowRight") n = i + 1;
+      if (e.key === "Home") n = 0;
+      if (e.key === "End") n = actes.length - 1;
+      if (n !== null) { e.preventDefault(); aller(n); rythme(); }
     });
 
-    // Suspensions passagères
-    function geler(etat) { gele = etat; rythme(); }
-    diapo.addEventListener("mouseenter", function () { geler(true); });
-    diapo.addEventListener("mouseleave", function () { geler(false); });
-    diapo.addEventListener("focusin", function () { geler(true); });
-    diapo.addEventListener("focusout", function () { geler(false); });
-    document.addEventListener("visibilitychange", function () { geler(document.hidden); });
+    function suspendre(etat) { gele = etat; rythme(); }
+    diapo.addEventListener("mouseenter", function () { suspendre(true); });
+    diapo.addEventListener("mouseleave", function () { suspendre(false); });
+    diapo.addEventListener("focusin", function () { suspendre(true); });
+    diapo.addEventListener("focusout", function () { suspendre(false); });
+    document.addEventListener("visibilitychange", function () { suspendre(document.hidden); });
 
-    function demarrer() {
+    sobre.addEventListener("change", function () {
       auto = !sobre.matches;
       majBouton();
       rythme();
-    }
-    sobre.addEventListener("change", demarrer);
-
-    peindre();
-    demarrer();
-  }
-
-  /* --- Connexion à l'espace numérique -----------------------------------
-     Aucun service d'authentification n'est branché. Le formulaire valide la
-     saisie puis oriente vers la scolarité. Ne jamais transmettre d'identifiant
-     tant qu'un point d'authentification en HTTPS n'est pas en place.        */
-  var login = document.getElementById("form-connexion");
-  if (login) {
-    var loginStatus = login.querySelector(".form-status");
-    login.addEventListener("submit", function (e) {
-      e.preventDefault();
-      if (!login.checkValidity()) {
-        login.reportValidity();
-        loginStatus.setAttribute("data-state", "err");
-        loginStatus.textContent = "Renseignez votre identifiant et votre mot de passe.";
-        return;
-      }
-      login.querySelector("#motdepasse").value = "";
-      loginStatus.setAttribute("data-state", "err");
-      loginStatus.textContent =
-        "L'espace numérique n'est pas encore ouvert. Pour obtenir vos accès, " +
-        "contactez la scolarité au +221 33 859 01 31.";
     });
+
+    auto = !sobre.matches;   // pas de defilement si le systeme demande le calme
+    majBouton();
+    peindre();
+    rythme();
   }
 
   /* --- Bandeau cookies : opt-in strict ----------------------------------

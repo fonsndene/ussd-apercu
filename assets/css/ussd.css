@@ -226,16 +226,7 @@ img { max-width: 100%; height: auto; display: block; }
      barre de navigation. Davantage en dessous, pour le detacher de la suite. */
   padding-block: clamp(.75rem, 1.4vw, 1.25rem) clamp(2rem, 4vw, 3rem);
 }
-/* Halo tres discret : donne de la profondeur sans image ni aplat. */
-.hero::before {
-  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  background:
-    radial-gradient(58rem 44rem at 78% 28%, rgba(123, 20, 24, .045), transparent 62%),
-    radial-gradient(40rem 32rem at 96% 92%, rgba(217, 138, 31, .06), transparent 60%);
-}
-
 .hero .wrap { position: relative; z-index: 1; }
-.hero h1 { margin-bottom: .5em; }
 .hero__lede {
   font-size: var(--t-lg); color: var(--ink-soft);
   max-width: 28rem; margin-bottom: 0;
@@ -243,96 +234,204 @@ img { max-width: 100%; height: auto; display: block; }
 .hero__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2.25rem; }
 
 
-/* --- Le diaporama, toute la largeur, accroche posee dessus --------------
-   Le voile degrade sous le texte est calibre pour tenir un contraste d'au
-   moins 6:1 avec le blanc, quelle que soit la photographie affichee — au-dela
-   du 4,5:1 exige par WCAG AA. Il est dense a gauche et s'efface a droite,
-   la photographie reste donc lisible. */
-.diapo { position: relative; }
+/* --- Le hero cinematique, en trois actes --------------------------------
+   Regle absolue : aucune animation ne passe derriere un texte. Seule l'image
+   bouge, et elle bouge SOUS un voile fixe. La zone de texte est donc un aplat
+   stable, dont le contraste a ete mesure acte par acte.
 
-.diapo__scene {
-  position: relative; overflow: hidden;
-  aspect-ratio: 16 / 9; min-height: 26rem;
-  border-radius: var(--radius); background: var(--ink);
+   Acte 1 : travelling avant lent      -> immersion
+   Acte 2 : travelling lateral         -> demonstration
+   Acte 3 : recul de camera, ralenti   -> projection                        */
+
+.cine { position: relative; }
+
+.cine__scene {
+  position: relative; aspect-ratio: 16 / 9; min-height: 26rem;
+  overflow: hidden; border-radius: var(--radius); background: var(--ink);
   box-shadow: 0 1px 2px rgba(26,21,18,.06), 0 24px 54px -28px rgba(26,21,18,.5);
 }
-.diapo__slide {
+
+/* Fondu enchaine long : la sortie d'un acte recouvre l'entree du suivant,
+   les deux cameras continuent de tourner pendant le raccord. */
+.cine__slide {
   position: absolute; inset: 0; margin: 0;
-  opacity: 0; visibility: hidden; transition: opacity 600ms ease;
+  opacity: 0; visibility: hidden;
+  transition: opacity 1200ms cubic-bezier(.4, 0, .2, 1), visibility 0s 1200ms;
 }
-.diapo__slide.is-active { opacity: 1; visibility: visible; }
-.diapo__slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.diapo__slide.is-active img { animation: derive 4000ms linear forwards; }
-@keyframes derive { from { transform: scale(1); } to { transform: scale(1.035); } }
+.cine__slide.is-active { opacity: 1; visibility: visible; transition-delay: 0s, 0s; }
 
-.diapo__voile {
-  position: absolute; inset: 0; pointer-events: none;
-  /* Opacites determinees par mesure, pas au jugé : la slide du laboratoire est
-     tres claire et tombait a 4,28:1 avec un voile plus leger. Ce profil tient
-     5,06:1 au pire pixel des trois images. */
+.cine__fond { position: absolute; inset: 0; overflow: hidden; }
+.cine__fond img { width: 100%; height: 100%; object-fit: cover; display: block; will-change: transform; }
+
+/* ---- Les trois cameras -------------------------------------------------- */
+.cine__slide--1.is-active .cine__fond img { animation: cam-avant 7600ms cubic-bezier(.33,0,.25,1) both; }
+.cine__slide--2.is-active .cine__fond img { animation: cam-lateral 8600ms cubic-bezier(.33,0,.25,1) both; }
+.cine__slide--3.is-active .cine__fond img { animation: cam-recul 9600ms cubic-bezier(.25,0,.2,1) both; }
+
+@keyframes cam-avant   { from { transform: scale(1.015) translate3d(0, .8%, 0); }
+                         to   { transform: scale(1.105) translate3d(0, -1.4%, 0); } }
+@keyframes cam-lateral { from { transform: scale(1.09) translate3d(2.6%, 0, 0); }
+                         to   { transform: scale(1.13) translate3d(-2.2%, -.6%, 0); } }
+@keyframes cam-recul   { from { transform: scale(1.135) translate3d(-1%, -1%, 0); }
+                         to   { transform: scale(1.015) translate3d(0, 0, 0); } }
+
+/* ---- Les trois voiles ---------------------------------------------------
+   Opacites determinees par mesure sur la zone de texte de chaque acte.     */
+.cine__voile { position: absolute; inset: 0; pointer-events: none; }
+
+/* Acte 1 : texte a gauche, cadre — voile lateral + vignette basse */
+.cine__slide--1 .cine__voile {
   background:
-    linear-gradient(96deg, rgba(18,14,11,.95) 0%, rgba(18,14,11,.92) 34%,
-                            rgba(18,14,11,.67) 56%, rgba(18,14,11,.18) 78%, rgba(18,14,11,.10) 100%),
-    linear-gradient(to top, rgba(18,14,11,.55) 0%, rgba(18,14,11,0) 42%);
+    linear-gradient(96deg, rgba(16,12,10,.96) 0%, rgba(16,12,10,.93) 36%,
+                           rgba(16,12,10,.66) 58%, rgba(16,12,10,.20) 80%, rgba(16,12,10,.12) 100%),
+    linear-gradient(to top, rgba(16,12,10,.50) 0%, rgba(16,12,10,0) 40%);
+}
+/* Acte 2 : colonne de faits a gauche — voile plus large, l'image respire a droite */
+.cine__slide--2 .cine__voile {
+  background:
+    linear-gradient(94deg, rgba(16,12,10,.96) 0%, rgba(16,12,10,.94) 42%,
+                           rgba(16,12,10,.70) 62%, rgba(16,12,10,.22) 84%, rgba(16,12,10,.12) 100%),
+    linear-gradient(to top, rgba(16,12,10,.45) 0%, rgba(16,12,10,0) 45%);
+}
+/* Acte 3 : promesse centree — voile plein, plus dense, pour la tenue finale */
+.cine__slide--3 .cine__voile {
+  background:
+    radial-gradient(120% 100% at 50% 55%, rgba(16,12,10,.80) 0%, rgba(16,12,10,.92) 60%, rgba(16,12,10,.96) 100%);
 }
 
-.diapo__contenu {
+/* ---- Le texte ----------------------------------------------------------
+   Un seul geste, decline : fondu + montee courte + micro-zoom. Jamais de
+   rebond, de rotation, ni d'arrivee rapide. Le decalage vient de --d.      */
+.cine__texte {
   position: absolute; inset: 0; z-index: 1;
   display: flex; flex-direction: column; justify-content: center;
-  padding: clamp(1.75rem, 4vw, 3.5rem);
-  max-width: 44rem;
+  padding: clamp(1.75rem, 4vw, 3.75rem);
+  max-width: 46rem;
 }
-.diapo__contenu .eyebrow { color: var(--ochre); margin-bottom: 1rem; }
-.diapo__contenu .eyebrow::before { background: var(--ochre); }
-.diapo__contenu h1 {
-  color: #fff; margin-bottom: 0;
-  font-size: clamp(1.75rem, 2.6vw + .9rem, 3rem);
-  text-shadow: 0 1px 20px rgba(0,0,0,.4);
-  max-width: 22ch;
+.cine__slide--3 .cine__texte {
+  max-width: none; align-items: center; text-align: center;
+  padding-inline: clamp(1.75rem, 8vw, 7rem);
 }
-.diapo__contenu .hero__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
 
-/* Commandes dans l'image, en bas a gauche : c'est la zone ou le voile est le
-   plus dense, donc la seule ou des reperes clairs restent lisibles. */
-.diapo__pilote { position: relative; margin-top: 2.25rem; }
-.diapo__jauge { display: flex; gap: .5rem; width: 9rem; }
-.pas:focus-visible { outline-offset: 4px; }
+.cine__slide.is-active .cine__texte > *,
+.cine__slide.is-active .cine__faits > li {
+  animation: entree 1100ms cubic-bezier(.16, .8, .28, 1) both;
+  animation-delay: var(--d, 0s);
+}
+@keyframes entree {
+  from { opacity: 0; transform: translate3d(0, 16px, 0) scale(.985); }
+  to   { opacity: 1; transform: none; }
+}
+/* Acte 2 : les faits viennent de la gauche — animation directionnelle. */
+.cine__slide--2.is-active .cine__faits > li {
+  animation-name: entree-laterale;
+}
+@keyframes entree-laterale {
+  from { opacity: 0; transform: translate3d(-22px, 0, 0); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---- Acte 1 : identite -------------------------------------------------- */
+.cine__blason { width: clamp(58px, 6vw, 86px); height: auto; margin-bottom: 1.5rem; }
+.cine__nom {
+  color: #fff; margin: 0 0 1.1rem;
+  font-size: clamp(1.6rem, 2.5vw + .8rem, 2.9rem); line-height: 1.14;
+  letter-spacing: -.015em; text-wrap: balance;
+}
+.cine__credo {
+  margin: 0 0 1.4rem; font-family: var(--display); font-style: italic;
+  font-size: clamp(1.125rem, 1vw + .8rem, 1.6rem); color: var(--ochre);
+}
+.cine__pied {
+  margin: 0; font-size: var(--t-sm); letter-spacing: .06em;
+  color: #C7BFB8;
+}
+
+/* ---- Acte 2 : l'offre --------------------------------------------------- */
+.cine__kicker {
+  margin: 0 0 1rem; font-size: var(--t-xs); font-weight: 700;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--ochre);
+}
+.cine__titre {
+  color: #fff; margin: 0 0 1.9rem;
+  font-family: var(--display); font-weight: 500;
+  font-size: clamp(1.4rem, 1.9vw + .8rem, 2.35rem); line-height: 1.16;
+  letter-spacing: -.015em;
+}
+.cine__faits { list-style: none; margin: 0; padding: 0; display: grid; gap: .55rem; }
+.cine__faits li {
+  display: grid; grid-template-columns: 5.5rem 1fr; align-items: baseline; gap: 1rem;
+  padding-left: .9rem; border-left: 2px solid rgba(217,138,31,.55);
+}
+.cine__faits b {
+  font-family: var(--display); font-size: clamp(1.05rem, .7vw + .85rem, 1.4rem);
+  font-weight: 600; color: var(--ochre); font-variant-numeric: tabular-nums;
+}
+.cine__faits span { font-size: var(--t-base); color: #DED7D0; }
+
+/* ---- Acte 3 : la promesse ---------------------------------------------- */
+.cine__promesse {
+  color: #fff; margin: 0 0 1.5rem;
+  font-family: var(--display); font-weight: 500;
+  font-size: clamp(1.5rem, 2.6vw + .8rem, 3rem); line-height: 1.15;
+  letter-spacing: -.02em; max-width: 20ch; text-wrap: balance;
+}
+.cine__signature {
+  margin: 0 0 2.25rem; font-family: var(--display); font-style: italic;
+  font-size: clamp(1.05rem, .9vw + .8rem, 1.45rem); color: var(--ochre);
+}
+.cine__appel { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: center; margin-bottom: 1.5rem; }
+
+/* ---- Pilotage ----------------------------------------------------------- */
+.cine__pilote { position: relative; margin-top: 1.1rem; }
+.cine__jauge { display: flex; gap: .5rem; width: 11rem; }
 .pas { flex: 1; background: none; border: 0; padding: .45rem 0; cursor: pointer; }
-.pas i { display: block; height: 2px; background: rgba(255,255,255,.38); position: relative; overflow: hidden; }
+.pas i { display: block; height: 2px; background: var(--line-strong); position: relative; overflow: hidden; }
 .pas i::after {
   content: ""; position: absolute; inset: 0;
   background: var(--ochre); transform: scaleX(0); transform-origin: left;
 }
-.pas:hover i { background: rgba(255,255,255,.65); }
-.pas.is-active i { background: rgba(255,255,255,.55); }
-.pas.is-active i::after { animation: remplir 4000ms linear forwards; }
+.pas:hover i { background: var(--ink-faint); }
+.pas.is-active i::after { animation: remplir var(--duree, 7000ms) linear both; }
 @keyframes remplir { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 .pas.is-vu i::after { transform: scaleX(1); }
+.pas:focus-visible { outline-offset: 4px; }
 
-/* Commande d'arret : hors ecran, ramenee des qu'elle recoit le focus clavier.
-   Meme principe que .skip-link — l'affordance existe pour qui en a besoin,
-   sans encombrer la composition. */
+/* Commande d'arret : hors ecran, ramenee au focus clavier. */
 .diapo__arret {
-  position: absolute; left: -9999px; top: .75rem;
+  position: absolute; left: -9999px; bottom: 100%;
   background: var(--ink); color: #fff; border: 1px solid rgba(255,255,255,.5);
-  border-radius: var(--radius); padding: .55rem 1rem;
+  border-radius: var(--radius); padding: .55rem 1rem; margin-bottom: .5rem;
   font: inherit; font-size: var(--t-sm); font-weight: 600; cursor: pointer;
 }
-.diapo__arret:focus { left: .75rem; z-index: 3; }
+.diapo__arret:focus { left: 0; z-index: 3; }
 
-.hero[data-pause="true"] .diapo__slide.is-active img,
+/* A l'arret, tout se fige : cameras, entrees de texte, jauge. */
+.hero[data-pause="true"] .cine__slide.is-active .cine__fond img,
+.hero[data-pause="true"] .cine__slide.is-active .cine__texte > *,
+.hero[data-pause="true"] .cine__slide.is-active .cine__faits > li,
 .hero[data-pause="true"] .pas.is-active i::after { animation-play-state: paused; }
 
 @media (max-width: 62rem) {
-  /* En etroit, le voile devient vertical : le texte occupe toute la largeur
-     et doit rester lisible sur la totalite de la photographie. */
-  .diapo__scene { aspect-ratio: 4 / 5; min-height: 0; }
-  .diapo__voile {
-    background: linear-gradient(to bottom, rgba(18,14,11,.55) 0%, rgba(18,14,11,.80) 45%, rgba(18,14,11,.94) 100%);
+  .cine__scene { aspect-ratio: 4 / 5; min-height: 0; }
+  .cine__texte { max-width: none; justify-content: flex-end; }
+  .cine__slide--1 .cine__voile, .cine__slide--2 .cine__voile {
+    background: linear-gradient(to bottom, rgba(16,12,10,.55) 0%, rgba(16,12,10,.84) 42%, rgba(16,12,10,.96) 100%);
   }
-  .diapo__contenu { max-width: none; justify-content: flex-end; }
-  .diapo__pilote { margin-top: 1.75rem; }
-  .diapo__jauge { flex: 1; width: auto; max-width: 12rem; }
+  .cine__faits li { grid-template-columns: 4.5rem 1fr; gap: .75rem; }
+  .cine__appel { justify-content: flex-start; }
+  .cine__slide--3 .cine__texte { text-align: left; align-items: flex-start; }
+  .cine__jauge { width: 100%; }
+}
+
+/* Mouvement reduit : plus de camera, plus de cascade, plus de defilement.
+   Le premier acte s'affiche, entier et immobile. */
+@media (prefers-reduced-motion: reduce) {
+  .cine__slide { transition: none; }
+  .cine__slide.is-active .cine__fond img,
+  .cine__slide.is-active .cine__texte > *,
+  .cine__slide.is-active .cine__faits > li { animation: none; opacity: 1; transform: none; }
+  .pas.is-active i::after { animation: none; transform: scaleX(1); }
 }
 
 /* --- L'objet : les deux cursus en arcs --------------------------------- */
