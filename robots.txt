@@ -1,0 +1,13 @@
+# APERÇU PRIVÉ — ce site est en cours de validation interne.
+# Aucune indexation n'est autorisée tant que les mentions légales sont
+# incomplètes et que les formulaires ne sont pas branchés.
+#
+# POUR LA MISE EN LIGNE PUBLIQUE : remplacer tout ce fichier par
+#   User-agent: *
+#   Allow: /
+#   Sitemap: https://www.universitesciencesante.com/sitemap.xml
+# et retirer la balise <meta name="robots" content="noindex, nofollow">
+# présente dans l'en-tête des dix pages HTML.
+
+User-agent: *
+Disallow: /

@@ -1,0 +1,6 @@
+# Captures de travail, hors livraison
+apercus/
+
+# Artefacts d'outils
+.playwright-mcp/
+*.orig

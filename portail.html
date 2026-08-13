@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Espace numérique — Portail étudiant et personnel | USSD</title>
+<meta name="description" content="Espace numérique de travail de l'USSD : emploi du temps, notes, ressources pédagogiques, attestations et vérification de diplôme. Accès réservé aux étudiants, enseignants et personnel.">
+<link rel="canonical" href="https://www.universitesciencesante.com/portail.html">
+<meta name="robots" content="noindex, nofollow">  <!-- APERCU : retirer cette ligne pour la mise en ligne publique -->
+<meta property="og:title" content="Espace numérique de l'USSD">
+<meta name="theme-color" content="#1A1512">
+<link rel="icon" href="assets/img/logo-ussd.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap">
+<link rel="stylesheet" href="assets/css/ussd.css">
+<script defer src="assets/js/ussd.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#contenu">Aller au contenu principal</a>
+
+<div class="topbar"><div class="wrap">
+  <span class="topbar__motto">L'excellence, notre credo</span>
+  <a href="portail.html">Portail étudiant</a>
+  <a href="contact.html">Contact</a>
+</div></div>
+
+<header class="masthead"><div class="wrap">
+  <a class="brand" href="index.html">
+    <img src="assets/img/logo-ussd.png" alt="" width="44" height="59">
+    <span><span class="brand__name">USSD</span><span class="brand__sub">Sciences de la santé · Dakar</span></span>
+  </a>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-principal"><span class="nav-toggle__text">Menu</span></button>
+  <nav class="nav" id="nav-principal" aria-label="Navigation principale"><ul>
+    <li><a href="l-universite.html">L'Université</a></li>
+    <li><a href="formations.html">Formations</a></li>
+    <li><a href="admissions.html">Admissions</a></li>
+    <li><a href="actualites.html">Actualités</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul></nav>
+  <a class="btn btn--primary" href="admissions.html#candidater">Candidater</a>
+</div></header>
+
+<nav class="crumbs" aria-label="Fil d'Ariane"><div class="wrap"><ol>
+  <li><a href="index.html">Accueil</a></li><li>Espace numérique</li>
+</ol></div></nav>
+
+<main id="contenu">
+
+  <!-- Zone d'accès restreint : fond sombre pour marquer la bascule -->
+  <section class="band portal" aria-labelledby="portail-titre">
+    <div class="wrap portal__grid">
+      <div>
+        <p class="eyebrow">Accès réservé</p>
+        <h1 id="portail-titre">Espace numérique de travail</h1>
+        <p style="font-size:var(--t-lg);max-width:34rem;color:#C9C2BB">
+          Emploi du temps, notes, ressources pédagogiques et attestations, au même endroit.
+          Réservé aux étudiants inscrits, aux enseignants et au personnel de l'Université.
+        </p>
+
+        <h2 style="font-size:var(--t-lg);margin:2.5rem 0 1rem">Choisir son accès</h2>
+        <div class="access">
+          <a href="#connexion">
+            <b>Étudiant</b>
+            <span>Emploi du temps, notes, ressources, attestations</span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+          <a href="#connexion">
+            <b>Enseignant</b>
+            <span>Saisie des notes, dépôt de supports, listes d'étudiants</span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+          <a href="#connexion">
+            <b>Personnel administratif</b>
+            <span>Scolarité, gestion des dossiers, éditions</span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <div class="secure-note" style="margin-top:2rem">
+          <h3>Sécurité de votre compte</h3>
+          <p style="margin:0">
+            L'accès est protégé par une authentification à deux facteurs. L'USSD ne vous
+            demandera jamais votre mot de passe par téléphone, par e-mail ou par WhatsApp.
+            En cas de message suspect, prévenez la scolarité au
+            <a href="tel:+221338590131">+221 33 859 01 31</a>.
+          </p>
+        </div>
+      </div>
+
+      <!-- Formulaire de connexion -->
+      <div class="login-card" id="connexion">
+        <h2>Se connecter</h2>
+        <p class="hint" style="margin-bottom:1.35rem">Utilisez l'identifiant fourni par la scolarité.</p>
+
+        <!-- À BRANCHER : aucun service d'authentification n'est connecté. Voir README. -->
+        <form id="form-connexion" novalidate>
+          <div class="field">
+            <label for="identifiant">Identifiant</label>
+            <input type="text" id="identifiant" name="identifiant" autocomplete="username"
+                   inputmode="text" placeholder="Ex. : etu-2026-0148" required>
+          </div>
+          <div class="field">
+            <label for="motdepasse">Mot de passe</label>
+            <input type="password" id="motdepasse" name="motdepasse" autocomplete="current-password" required>
+          </div>
+          <button class="btn btn--primary btn--block" type="submit">Se connecter</button>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+
+        <div class="login-card__foot">
+          <a href="contact.html">Mot de passe oublié</a>
+          <a href="contact.html">Première connexion</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ce que l'espace numérique donne -->
+  <section class="band" aria-labelledby="services-titre">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Services</p>
+        <h2 id="services-titre">Ce que vous y trouvez</h2>
+        <p>Les services ci-dessous sont ceux prévus pour l'espace numérique. Leur ouverture est progressive.</p>
+      </div>
+      <div class="services">
+        <div class="service">
+          <span class="service__tag">Étudiant</span>
+          <h3>Emploi du temps</h3>
+          <p>Cours, travaux pratiques et affectations de stage, mis à jour par la scolarité.</p>
+        </div>
+        <div class="service">
+          <span class="service__tag">Étudiant</span>
+          <h3>Notes et résultats</h3>
+          <p>Relevés par semestre, suivi de la progression dans le cursus.</p>
+        </div>
+        <div class="service">
+          <span class="service__tag">Étudiant</span>
+          <h3>Ressources pédagogiques</h3>
+          <p>Supports de cours et documents déposés par les enseignants.</p>
+        </div>
+        <div class="service">
+          <span class="service__tag">Étudiant</span>
+          <h3>Attestations</h3>
+          <p>Certificat de scolarité et attestations à télécharger, sans passer au secrétariat.</p>
+        </div>
+        <div class="service">
+          <span class="service__tag">Enseignant</span>
+          <h3>Saisie des notes</h3>
+          <p>Dépôt des évaluations et transmission à la scolarité.</p>
+        </div>
+        <div class="service">
+          <span class="service__tag">Public</span>
+          <h3>Vérification de diplôme</h3>
+          <p>Contrôle de l'authenticité d'un diplôme délivré par l'USSD, à destination des employeurs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--mist"><div class="wrap grid grid--2">
+    <div>
+      <p class="eyebrow">Assistance</p>
+      <h2>Un problème de connexion&nbsp;?</h2>
+      <p class="measure">
+        Identifiant non reçu, mot de passe perdu, compte bloqué&nbsp;: contactez la scolarité,
+        qui gère la création et la réinitialisation des accès.
+      </p>
+      <ul class="list-plain">
+        <li><b>Téléphone</b> <a href="tel:+221338590131">+221 33 859 01 31</a></li>
+        <li><b>E-mail</b> <a href="mailto:contact@universitesciencesante.com">contact@universitesciencesante.com</a></li>
+        <li><b>Sur place</b> <span>Secrétariat, Point E, Avenue Birago Diop x Rue de Thiès</span></li>
+      </ul>
+    </div>
+    <div>
+      <p class="eyebrow">Nouveaux inscrits</p>
+      <h2>Vos accès à la rentrée</h2>
+      <p class="measure">
+        Les identifiants sont remis lors de l'inscription administrative. La rentrée
+        universitaire a lieu le <b>5 octobre</b>&nbsp;: les accès sont ouverts à cette date.
+      </p>
+      <p><a class="btn btn--ghost" href="admissions.html">Voir les admissions</a></p>
+    </div>
+  </div></section>
+
+</main>
+
+<footer class="footer"><div class="wrap">
+  <div class="footer__grid">
+    <div class="footer__brand">
+      <img src="assets/img/logo-ussd.png" alt="" width="68" height="91">
+      <p class="footer__motto">L'excellence, notre credo</p>
+      <p style="margin:0">Point E, Avenue Birago Diop x Rue de Thiès<br>BP 15326, Dakar, Sénégal</p>
+    </div>
+    <div><h3>Formations</h3><ul>
+      <li><a href="formations.html#medecine">Médecine</a></li><li><a href="formations.html#pharmacie">Pharmacie</a></li>
+      <li><a href="admissions.html">Admissions</a></li><li><a href="admissions.html#frais">Frais de scolarité</a></li>
+    </ul></div>
+    <div><h3>L'Université</h3><ul>
+      <li><a href="l-universite.html">Qui sommes-nous</a></li><li><a href="l-universite.html#partenariats">Partenaires hospitaliers</a></li>
+      <li><a href="actualites.html">Actualités</a></li><li><a href="portail.html">Espace numérique</a></li>
+    </ul></div>
+    <div><h3>Nous joindre</h3><ul>
+      <li><a href="tel:+221338590131">+221 33 859 01 31</a></li>
+      <li><a href="https://wa.me/221775697010">WhatsApp : +221 77 569 70 10</a></li>
+      <li><a href="mailto:contact@universitesciencesante.com">contact@universitesciencesante.com</a></li>
+      <li><a href="contact.html">Formulaire de contact</a></li>
+    </ul></div>
+  </div>
+  <div class="footer__legal">
+    <p style="margin:0">© 2016–2026 Université des Sciences de la Santé de Dakar</p>
+    <ul>
+      <li><a href="mentions-legales.html">Mentions légales</a></li><li><a href="confidentialite.html">Données personnelles</a></li>
+      <li><a href="accessibilite.html">Accessibilité</a></li><li><a href="sitemap.xml">Plan du site</a></li>
+    </ul>
+  </div>
+</div></footer>
+
+<div class="cookie" id="cookie-banner" role="dialog" aria-labelledby="cookie-titre" aria-describedby="cookie-desc" hidden>
+  <h2 id="cookie-titre">Cookies</h2>
+  <p id="cookie-desc">Ce site ne dépose aucun cookie de mesure d'audience ni de publicité. Seul votre choix ci-dessous est conservé sur votre appareil. Voir la <a href="confidentialite.html">politique de données personnelles</a>.</p>
+  <div class="cookie__actions">
+    <button class="btn btn--primary" type="button" data-consent="accepte">J'ai compris</button>
+    <button class="btn btn--ghost" type="button" data-consent="refuse">Refuser</button>
+  </div>
+</div>
+</body>
+</html>
