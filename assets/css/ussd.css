@@ -222,7 +222,9 @@ img { max-width: 100%; height: auto; display: block; }
 .hero {
   position: relative; overflow: hidden;
   border-bottom: 1px solid var(--line);
-  padding-block: clamp(2.5rem, 5vw, 4rem);
+  /* Peu d'air au-dessus : le diaporama doit venir se placer juste sous la
+     barre de navigation. Davantage en dessous, pour le detacher de la suite. */
+  padding-block: clamp(.75rem, 1.4vw, 1.25rem) clamp(2rem, 4vw, 3rem);
 }
 /* Halo tres discret : donne de la profondeur sans image ni aplat. */
 .hero::before {
