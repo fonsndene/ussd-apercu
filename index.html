@@ -442,25 +442,54 @@
         <p class="eyebrow">Formations</p>
         <h2 id="formations-titre">Deux diplômes d'État</h2>
       </div>
-      <div class="grid grid--2">
-        <article class="card card--feature">
-          <p class="card__kicker">8 ans · Licence — Master — Doctorat</p>
-          <h3>Docteur en Médecine</h3>
-          <p>
-            Former des médecins compétents et éthiques. Enseignements théoriques rigoureux,
-            travaux pratiques et stages hospitaliers immersifs dès les premières années.
-          </p>
-          <div class="card__foot"><a class="btn btn--ghost" href="formations.html#medecine">Détail du cursus</a></div>
-        </article>
-        <article class="card card--feature">
-          <p class="card__kicker">6 ans · Licence — Master — Doctorat</p>
-          <h3>Docteur en Pharmacie</h3>
-          <p>
-            Former des pharmaciens engagés pour la santé publique. Théorie, pratique en laboratoire,
-            stages hospitaliers et officinaux pour maîtriser le médicament et la biologie.
-          </p>
-          <div class="card__foot"><a class="btn btn--ghost" href="formations.html#pharmacie">Détail du cursus</a></div>
-        </article>
+      <div class="cursus-cartes">
+
+        <a class="cursus-carte reveal" style="--i:0" href="formations.html#medecine">
+          <div class="cursus-carte__vue">
+            <img src="assets/img/photos/cours.webp"
+                 alt="Séance d&rsquo;enseignement dans une salle de cours de l&rsquo;USSD"
+                 width="800" height="500" loading="lazy" decoding="async">
+            <span class="cursus-carte__duree"><b>8</b><small>ans</small></span>
+          </div>
+          <div class="cursus-carte__corps">
+            <p class="cursus-carte__kicker">Licence &mdash; Master &mdash; Doctorat</p>
+            <h3>Docteur en Médecine</h3>
+            <p class="cursus-carte__texte">
+              Former des médecins compétents et éthiques. Enseignements théoriques rigoureux,
+              travaux pratiques et stages hospitaliers immersifs dès les premières années.
+            </p>
+            <ul class="cursus-carte__faits">
+              <li>Accès Bac S1, S2 ou équivalent</li>
+              <li>Hôpital dès la deuxième année</li>
+              <li>Thèse d&rsquo;exercice en huitième année</li>
+            </ul>
+            <span class="cursus-carte__action">Détail du cursus<i aria-hidden="true">&rarr;</i></span>
+          </div>
+        </a>
+
+        <a class="cursus-carte reveal" style="--i:1" href="formations.html#pharmacie">
+          <div class="cursus-carte__vue">
+            <img src="assets/img/photos/stage-officine.webp"
+                 alt="Étudiante de l&rsquo;USSD en blouse blanche derrière le comptoir d&rsquo;une officine"
+                 width="800" height="500" loading="lazy" decoding="async">
+            <span class="cursus-carte__duree"><b>6</b><small>ans</small></span>
+          </div>
+          <div class="cursus-carte__corps">
+            <p class="cursus-carte__kicker">Licence &mdash; Master &mdash; Doctorat</p>
+            <h3>Docteur en Pharmacie</h3>
+            <p class="cursus-carte__texte">
+              Former des pharmaciens engagés pour la santé publique. Théorie, pratique en
+              laboratoire, stages hospitaliers et officinaux pour maîtriser le médicament.
+            </p>
+            <ul class="cursus-carte__faits">
+              <li>Accès Bac S1, S2 ou équivalent</li>
+              <li>Laboratoire dès la deuxième année</li>
+              <li>Thèse d&rsquo;exercice en sixième année</li>
+            </ul>
+            <span class="cursus-carte__action">Détail du cursus<i aria-hidden="true">&rarr;</i></span>
+          </div>
+        </a>
+
       </div>
     </div>
   </section>
@@ -472,27 +501,39 @@
         <p class="eyebrow">Actualités &amp; agenda</p>
         <h2 id="actu-titre">La vie de l'Université</h2>
       </div>
-      <div class="news-item">
+      <article class="news-item reveal" style="--i:0">
+      <div class="news-item__vue">
+        <img src="assets/img/photos/campus-03.webp" alt="Étudiants de l&rsquo;USSD lors de la journée d&rsquo;intégration"
+             width="640" height="428" loading="lazy" decoding="async">
+      </div>
+      <div class="news-item__corps">
         <time datetime="2026-10-05">5 octobre 2026</time>
-        <div>
-          <h3>Rentrée universitaire</h3>
+        <h3>Rentrée universitaire</h3>
           <p>Accueil des nouveaux étudiants sur le campus de Point E et ouverture des accès au portail numérique de suivi des études.</p>
         </div>
+    </article>
+      <article class="news-item reveal" style="--i:1">
+      <div class="news-item__vue">
+        <img src="assets/img/photos/secretariat.webp" alt="Le secrétariat de l&rsquo;USSD, où sont déposés les dossiers de candidature"
+             width="640" height="428" loading="lazy" decoding="async">
       </div>
-      <div class="news-item">
+      <div class="news-item__corps">
         <time datetime="2026-09-15">Jusqu'au 15 septembre</time>
-        <div>
-          <h3>Candidatures ouvertes pour la prochaine rentrée</h3>
+        <h3>Candidatures ouvertes pour la prochaine rentrée</h3>
           <p>Dépôt des dossiers au secrétariat du campus, par e-mail ou via WhatsApp, dans la limite des places disponibles.</p>
         </div>
+    </article>
+      <article class="news-item reveal" style="--i:2">
+      <div class="news-item__vue">
+        <img src="assets/img/photos/etudiants-02.webp" alt="Réunion officielle à l&rsquo;USSD avec une délégation académique internationale"
+             width="640" height="428" loading="lazy" decoding="async">
       </div>
-      <div class="news-item">
+      <div class="news-item__corps">
         <time datetime="2026-03-29">2026</time>
-        <div>
-          <h3>L'USSD fête ses dix ans</h3>
+        <h3>L'USSD fête ses dix ans</h3>
           <p>Une semaine de manifestations scientifiques, culturelles et sociales, avec un colloque international sur la formation en sciences de la santé en Afrique.</p>
         </div>
-      </div>
+    </article>
       <p style="margin-top:1.75rem"><a class="btn btn--ghost" href="actualites.html">Toutes les actualités</a></p>
     </div>
   </section>
