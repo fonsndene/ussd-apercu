@@ -15,6 +15,74 @@
     });
   }
 
+  /* --- Chiffres cles : compteurs qui defilent ----------------------------
+     Le decompte demarre quand la rangee entre dans l'ecran, avec un decalage
+     d'une cellule a l'autre. La valeur reelle est presente en clair dans le
+     DOM pour les lecteurs d'ecran : seul l'affichage anime est masque, sinon
+     un lecteur d'ecran annoncerait chaque increment.                        */
+  var rangees = document.querySelectorAll(".stats");
+  if (rangees.length) {
+    var immobile = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function defiler(rangee) {
+      rangee.classList.add("is-in");
+      rangee.querySelectorAll(".stat__value[data-cible]").forEach(function (val, n) {
+        var cible = parseInt(val.getAttribute("data-cible"), 10);
+        var sortie = val.querySelector(".stat__num");
+        if (isNaN(cible) || !sortie) { return; }
+        if (immobile) { sortie.textContent = cible; return; }
+
+        var duree = 1400, retard = n * 120, depart = null;
+        function pas(t) {
+          if (depart === null) { depart = t; }
+          var e = t - depart - retard;
+          if (e < 0) { requestAnimationFrame(pas); return; }
+          var k = Math.min(1, e / duree);
+          // sortie cubique : depart franc, arrivee posee
+          var v = 1 - Math.pow(1 - k, 3);
+          sortie.textContent = Math.round(cible * v);
+          if (k < 1) { requestAnimationFrame(pas); }
+        }
+        requestAnimationFrame(pas);
+      });
+    }
+
+    if (!immobile && "IntersectionObserver" in window) {
+      var oStats = new IntersectionObserver(function (entrees) {
+        entrees.forEach(function (e) {
+          if (e.isIntersecting) { defiler(e.target); oStats.unobserve(e.target); }
+        });
+      }, { rootMargin: "0px 0px -10% 0px", threshold: 0.3 });
+      rangees.forEach(function (r) { oStats.observe(r); });
+    } else {
+      rangees.forEach(defiler);
+    }
+  }
+
+  /* --- Le parcours : construction a l'entree dans l'ecran ----------------
+     Le cadran des deux cursus et l'echelle annee par annee ne s'animent que
+     lorsque la section arrive a l'ecran, et l'echelle rejoue a chaque
+     changement de cursus : le visiteur voit le parcours se construire.    */
+  var calme = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function construire(el) {
+    if (!el) { return; }
+    el.classList.remove("is-in");
+    void el.offsetWidth;          // rearme les animations
+    el.classList.add("is-in");
+  }
+
+  if (!calme && "IntersectionObserver" in window) {
+    var oParcours = new IntersectionObserver(function (entrees) {
+      entrees.forEach(function (e) {
+        if (e.isIntersecting) { construire(e.target); oParcours.unobserve(e.target); }
+      });
+    }, { rootMargin: "0px 0px -12% 0px", threshold: 0.15 });
+    document.querySelectorAll(".cursus, .ladder").forEach(function (el) { oParcours.observe(el); });
+  } else {
+    document.querySelectorAll(".cursus, .ladder").forEach(function (el) { el.classList.add("is-in"); });
+  }
+
   /* --- Signature : onglets du parcours ---------------------------------- */
   var tablist = document.querySelector('[role="tablist"][data-tabs="parcours"]');
   if (tablist) {
@@ -25,7 +93,10 @@
         var on = t === tab;
         t.setAttribute("aria-selected", String(on));
         t.tabIndex = on ? 0 : -1;
-        document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+        var panneau = document.getElementById(t.getAttribute("aria-controls"));
+        panneau.hidden = !on;
+        // Le cursus qui apparait rejoue sa construction.
+        if (on && !calme) { construire(panneau.querySelector(".ladder")); }
       });
       if (focus) tab.focus();
     }
