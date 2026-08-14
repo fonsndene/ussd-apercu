@@ -1156,74 +1156,172 @@ table.data td.num { text-align: right; font-variant-numeric: tabular-nums; font-
 @media (max-width: 60rem) { .footer__grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 34rem) { .footer__grid { grid-template-columns: 1fr; gap: 2rem; } }
 
-/* --- 14 bis. Espace numérique (portail) ---------------------------------
-   Fond sombre : on signale visuellement le passage du site public à une
-   zone d'accès restreint, sans changer d'identité. */
-.portal { background: var(--ink); color: #D8D2CC; }
+/* --- 14 bis. Espace numérique — traitement haut de gamme ----------------
+   Le fond n'est pas un aplat : deux halos tres sourds et une trame de filets
+   donnent de la profondeur sans image ni texture a telecharger. Le blason
+   veille en filigrane a droite. */
+.portal {
+  position: relative; isolation: isolate; overflow: hidden;
+  background: var(--ink); color: #D8D2CC;
+}
+.portal::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(52rem 40rem at 88% 8%, rgba(123, 20, 24, .38), transparent 66%),
+    radial-gradient(38rem 30rem at 4% 96%, rgba(217, 138, 31, .13), transparent 62%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.028) 0 1px, transparent 1px 52px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.028) 0 1px, transparent 1px 52px);
+}
+/* Pas de filigrane du blason : le fichier a un fond blanc, il ressortirait en
+   bloc pale. Les deux halos et la trame suffisent a porter la profondeur. */
 .portal h1, .portal h2, .portal h3 { color: #fff; }
 .portal .eyebrow { color: var(--ochre); }
 .portal__grid {
+  position: relative; z-index: 1;
   display: grid; gap: clamp(2rem, 4vw, 3.5rem);
-  grid-template-columns: minmax(0, 1fr) minmax(0, 24rem);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 25rem);
   align-items: start;
 }
 @media (max-width: 58rem) { .portal__grid { grid-template-columns: 1fr; } }
 
+/* --- La carte de connexion ---------------------------------------------- */
 .login-card {
-  background: var(--paper); color: var(--ink);
-  border-radius: var(--radius); padding: 1.75rem;
-  border-top: 3px solid var(--oxblood);
-  box-shadow: 0 18px 48px -16px rgba(0, 0, 0, .55);
+  position: relative; background: var(--paper); color: var(--ink);
+  border-radius: var(--radius); padding: 2rem 1.9rem 1.9rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,.2), 0 30px 70px -24px rgba(0, 0, 0, .7);
 }
-.login-card h2 { color: var(--ink); font-size: var(--t-xl); margin-bottom: .25rem; }
+/* Filet de tete degrade : plus habille qu'une bordure pleine. */
+.login-card::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 3px;
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: linear-gradient(90deg, var(--oxblood) 0%, var(--oxblood) 55%, var(--ochre) 100%);
+}
+.login-card__badge {
+  display: inline-flex; align-items: center; gap: .45rem; margin: 0 0 1.1rem;
+  font-size: .625rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--laurel); background: var(--laurel-lt); border: 1px solid #C4DCCB;
+  padding: .3rem .6rem .3rem .5rem; border-radius: 2px;
+}
+.login-card__badge svg {
+  width: .85rem; height: .85rem; fill: none; stroke: currentColor;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+.login-card h2 { color: var(--ink); font-size: var(--t-2xl); margin-bottom: .3rem; }
 .login-card .hint { color: var(--ink-faint); }
+.login-card .field label { font-size: var(--t-xs); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
+.login-card .field input { padding: .8rem .9rem; transition: border-color .2s ease, box-shadow .2s ease; }
+.login-card .field input:focus {
+  border-color: var(--oxblood); box-shadow: 0 0 0 3px rgba(123,20,24,.12); outline: none;
+}
+.login-card .btn { margin-top: .35rem; padding-block: .9rem; }
 .login-card__foot {
-  margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--line);
+  margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--line);
   font-size: var(--t-sm); display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; justify-content: space-between;
 }
 
-/* Rails d'accès par profil */
-.access { display: grid; gap: 1px; background: rgba(255,255,255,.16);
-  border: 1px solid rgba(255,255,255,.16); border-radius: var(--radius); overflow: hidden; }
-.access a {
-  background: var(--ink); color: #EDE9E5; text-decoration: none;
-  padding: 1.15rem 1.35rem; display: flex; flex-wrap: wrap; gap: .25rem 1rem; align-items: baseline;
-  transition: background-color .18s ease;
+/* --- Rails d'accès par profil ------------------------------------------- */
+.access {
+  display: grid; gap: 1px; background: rgba(255,255,255,.14);
+  border: 1px solid rgba(255,255,255,.14); border-radius: var(--radius); overflow: hidden;
 }
-.access a:hover, .access a:focus-visible { background: #2A231E; color: #fff; }
+.access a {
+  position: relative; background: rgba(255,255,255,.02); color: #EDE9E5; text-decoration: none;
+  padding: 1.25rem 1.5rem; display: flex; flex-wrap: wrap; gap: .3rem 1.1rem; align-items: baseline;
+  transition: background-color .3s ease, padding-left .3s cubic-bezier(.22,.8,.28,1);
+}
+/* Un liseré ocre se déploie à gauche au survol. */
+.access a::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--ochre); transform: scaleY(0); transform-origin: center;
+  transition: transform .35s cubic-bezier(.22,.8,.28,1);
+}
+.access a:hover, .access a:focus-visible { background: rgba(255,255,255,.07); color: #fff; padding-left: 1.75rem; }
+.access a:hover::before, .access a:focus-visible::before { transform: scaleY(1); }
+
+.access__n {
+  font-family: var(--display); font-size: var(--t-sm); font-weight: 600;
+  color: var(--ochre); font-variant-numeric: tabular-nums; flex: none;
+  opacity: .85; letter-spacing: .02em;
+}
 .access b { font-size: var(--t-base); flex: none; }
-.access span { font-size: var(--t-sm); color: #ADA49C; }
-.access .arrow { margin-left: auto; color: var(--ochre); flex: none; order: 1; }
+.access__d { font-size: var(--t-sm); color: #A79E96; }
+.access .arrow {
+  margin-left: auto; color: var(--ochre); flex: none; order: 1;
+  transition: transform .3s cubic-bezier(.22,.8,.28,1);
+}
+.access a:hover .arrow, .access a:focus-visible .arrow { transform: translateX(5px); }
 
 @media (max-width: 46rem) {
-  /* La description passe sous l'intitulé plutôt que d'être tronquée. */
-  .access a { padding: 1rem 1.15rem; }
+  .access a { padding: 1.05rem 1.15rem; gap: .25rem .8rem; }
   .access b { flex: 1 1 auto; }
-  .access span:not(.arrow) { flex: 1 1 100%; order: 2; }
+  .access__d { flex: 1 1 100%; order: 2; }
 }
 
-/* Services offerts par l'ENT */
-.services { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+/* --- Les services -------------------------------------------------------- */
+.services { display: grid; gap: 1.35rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
 .service {
-  border: 1px solid var(--line); border-radius: var(--radius); padding: 1.35rem;
-  background: var(--paper);
+  position: relative; overflow: hidden;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 1.6rem 1.5rem 1.5rem; background: var(--paper);
+  transition: transform .4s cubic-bezier(.22,.8,.28,1), box-shadow .4s ease, border-color .3s ease;
 }
-.service h3 { font-size: var(--t-base); font-family: var(--body); font-weight: 700; margin-bottom: .3rem; }
+/* Accent de tete selon le public vise. */
+.service::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 3px;
+  background: var(--accent, var(--line-strong));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .45s cubic-bezier(.22,.8,.28,1);
+}
+.service--etudiant  { --accent: var(--laurel); }
+.service--enseignant{ --accent: var(--oxblood); }
+.service--public    { --accent: var(--ochre); }
+.service:hover {
+  transform: translateY(-5px); border-color: var(--line-strong);
+  box-shadow: 0 2px 4px rgba(26,21,18,.05), 0 24px 46px -24px rgba(26,21,18,.45);
+}
+.service:hover::before { transform: scaleX(1); }
+
+.service__ico {
+  display: grid; place-items: center; width: 2.5rem; height: 2.5rem;
+  border-radius: var(--radius); margin-bottom: 1rem;
+  background: var(--mist); color: var(--accent, var(--ink-soft));
+  transition: background-color .3s ease, transform .4s cubic-bezier(.22,.8,.28,1);
+}
+.service__ico svg {
+  width: 1.25rem; height: 1.25rem; fill: none; stroke: currentColor;
+  stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round;
+}
+.service:hover .service__ico { transform: scale(1.06); }
+.service--etudiant:hover  .service__ico { background: var(--laurel-lt); }
+.service--enseignant:hover .service__ico { background: #FBEFEF; }
+.service--public:hover    .service__ico { background: var(--ochre-lt); }
+
+.service h3 { font-size: var(--t-base); font-family: var(--body); font-weight: 700; margin-bottom: .35rem; }
 .service p { font-size: var(--t-sm); color: var(--ink-soft); margin: 0; }
 .service__tag {
-  display: inline-block; margin-bottom: .7rem;
-  font-size: .625rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  display: inline-block; margin-bottom: .6rem;
+  font-size: .625rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  padding: .2rem .5rem; border-radius: 2px;
   color: var(--laurel); background: var(--laurel-lt); border: 1px solid #C4DCCB;
-  padding: .2rem .45rem; border-radius: 2px;
 }
+.service--enseignant .service__tag { color: var(--oxblood); background: #FBEFEF; border-color: #F0C9C9; }
+.service--public .service__tag { color: #8A5510; background: var(--ochre-lt); border-color: #EBCF9A; }
 
-/* Avertissement de sécurité, sur fond sombre */
+/* --- Avertissement de sécurité ------------------------------------------ */
 .secure-note {
-  border-left: 3px solid var(--ochre); background: rgba(217, 138, 31, .12);
-  padding: 1.1rem 1.35rem; border-radius: 0 var(--radius) var(--radius) 0;
+  position: relative; border-left: 3px solid var(--ochre);
+  background: linear-gradient(90deg, rgba(217,138,31,.16), rgba(217,138,31,.05));
+  padding: 1.25rem 1.5rem; border-radius: 0 var(--radius) var(--radius) 0;
   font-size: var(--t-sm); color: #F0E4D2;
 }
-.secure-note h3 { font-size: var(--t-base); font-family: var(--body); font-weight: 700; margin-bottom: .3rem; }
+.secure-note h3 {
+  font-size: var(--t-base); font-family: var(--body); font-weight: 700; margin-bottom: .35rem;
+  display: flex; align-items: center; gap: .5rem;
+}
+.secure-note h3::before {
+  content: ""; width: .55rem; height: .55rem; border-radius: 50%;
+  background: var(--ochre); box-shadow: 0 0 0 4px rgba(217,138,31,.22); flex: none;
+}
 .secure-note a { color: var(--ochre); }
 
 /* --- 15. Bandeau cookies ------------------------------------------------ */
